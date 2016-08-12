@@ -3,6 +3,8 @@
 from django.contrib.auth.models import User
 from rest_framework import viewsets
 from rest_framework import permissions
+from rest_framework.decorators import detail_route
+from rest_framework.response import Response
 from cms.models import Article
 from cms.serializers import ArticleSerializer
 from cms.serializers import UserSerializer
@@ -24,3 +26,8 @@ class AritcleViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+    @detail_route()
+    def content(self, request, *args, **kwargs):
+        article = self.get_object()
+        return Response(article.content)

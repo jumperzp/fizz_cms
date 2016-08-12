@@ -15,6 +15,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class ArticleSerializer(serializers.HyperlinkedModelSerializer):
 
     author = serializers.ReadOnlyField(source='author.username')
+    content = serializers.HyperlinkedIdentityField(view_name='article-content',
+                                                   format='json')
 
     class Meta:
         model = Article
