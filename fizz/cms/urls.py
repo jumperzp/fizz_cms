@@ -5,7 +5,8 @@ from rest_framework.routers import DefaultRouter
 from cms import views
 
 router = DefaultRouter()
-router.register(r'article', views.AritcleViewSet)
+router.register(r'users', views.UserViewSet)
+router.register(r'articles', views.AritcleViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),

@@ -15,3 +15,6 @@ class Article(models.Model):
 
     class Meta:
         ordering = ('-created', )
+
+    def save(self, *args, **kwargs):
+        super(Article, self).save(*args, **kwargs)
