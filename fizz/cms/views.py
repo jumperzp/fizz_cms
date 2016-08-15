@@ -3,10 +3,8 @@
 from django.contrib.auth.models import User
 from rest_framework import viewsets
 from rest_framework import permissions
-from rest_framework.decorators import detail_route
-from rest_framework.response import Response
 from cms.models import Article
-from cms.serializers import ArticleSerializer
+from cms.serializers import ArticleSerializer, TinyArticleSerializer
 from cms.serializers import UserSerializer
 from cms.permissions import IsAuthorOrReadOnly
 
@@ -20,14 +18,14 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 class AritcleViewSet(viewsets.ModelViewSet):
 
     queryset = Article.objects.all()
-    serializer_class = ArticleSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return TinyArticleSerializer
+        return ArticleSerializer
+
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                           IsAuthorOrReadOnly, )
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
-
-    @detail_route()
-    def content(self, request, *args, **kwargs):
-        article = self.get_object()
-        return Response(article.content)

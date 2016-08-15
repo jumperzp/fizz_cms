@@ -9,15 +9,22 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = User
-        fields = ('url', 'pk', 'username', )
+        fields = ('url', 'pk', 'username')
 
 
 class ArticleSerializer(serializers.HyperlinkedModelSerializer):
 
     author = serializers.ReadOnlyField(source='author.username')
-    content = serializers.HyperlinkedIdentityField(view_name='article-content',
-                                                   format='json')
 
     class Meta:
         model = Article
-        fields = ('url', 'pk', 'created', 'author', 'title', 'subtitle', 'content', )
+        fields = ('url', 'pk', 'created', 'author', 'title', 'content')
+
+
+class TinyArticleSerializer(serializers.HyperlinkedModelSerializer):
+
+    author = serializers.ReadOnlyField(source='author.username')
+
+    class Meta:
+        model = Article
+        fields = ('url', 'pk', 'author', 'title')
